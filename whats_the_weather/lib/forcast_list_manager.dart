@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:location/location.dart';
 
 import './forcasts.dart';
 
@@ -16,14 +15,10 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   //final String _baseAPIurl = '';
   String _inputCityValue = '', _inputCoordinatesValues = '';
 
-  // Location variables.
-  var _location = Location();
-  Map<String, double> userLocation;
 
   @override
   void initState() {
     super.initState();
-    this._getLocation();
   }
 
   void onPressed(String type) {
@@ -48,17 +43,6 @@ class _ForcastListManagerState extends State<ForcastListManager> {
         _inputCoordinatesValues = inputValue;
       }
     });
-  }
-
-  // For using current location.
-  Future<Map<String, double>> _getLocation() async {
-    var currentLocation = <String, double>{};
-    try {
-      currentLocation = await _location.getLocation();
-    } catch (e) {
-      currentLocation = null;
-    }
-    return currentLocation;
   }
 
   @override
