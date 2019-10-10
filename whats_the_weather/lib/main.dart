@@ -1,5 +1,7 @@
+// Package imports.
 import 'package:flutter/material.dart';
 
+// Internal imports.
 import './forcast_list_manager.dart';
 
 void main() => runApp(MyApp());
