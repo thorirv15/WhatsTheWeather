@@ -21,9 +21,8 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   final String _baseAPIurl =
       'https://community-open-weather-map.p.rapidapi.com/forecast';
   List _forcastData = [];
-  String _inputCityValue = '', _inputCoordinatesValues = '';
-  String _todayTitle = '';
- 
+  String _inputCityValue = '', _inputCoordinatesValues = '', _todayTitle = '';
+  bool _cacheIsClear = true;
 
   @override
   void initState() {
@@ -36,24 +35,28 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   Future readFromSharedPreferences() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     final timeStampKey = 'timestamp_key';
-    
+
     final storedTimeStampStr = sharedPrefs.getString(timeStampKey);
-    
+    if(storedTimeStampStr == null) { return; }
     DateTime storedTimeStamp = DateTime.parse(storedTimeStampStr);
     DateTime currentTimeStamp = DateTime.now();
-    
+
     // If more than 12 hours from stored timestamp,
     // cache will be cleared.
-    if(currentTimeStamp.difference(storedTimeStamp).inHours > 12) {
+    if (currentTimeStamp.difference(storedTimeStamp).inHours > 12) {
       sharedPrefs.clear();
+      setState(() {
+        _cacheIsClear = true;  
+      });
       return;
     }
 
-    // The most recent weather forcast for the latest 
+    // The most recent weather forcast for the latest
     // search input in the application is fetched.
     final searchKey = 'search_key';
     final val = sharedPrefs.getString(searchKey);
-    if(val != null) {
+    if (val != null) {
+      _cacheIsClear = false;
       fetchForcastData(val);
     }
   }
@@ -67,6 +70,9 @@ class _ForcastListManagerState extends State<ForcastListManager> {
 
     await sharedPrefs.setString(timeStampKey, DateTime.now().toString());
     await sharedPrefs.setString(searchKey, inputSearchKey);
+    setState(() {
+      _cacheIsClear = false;
+    });
   }
 
   void onPressed(String searchType) {
@@ -80,8 +86,8 @@ class _ForcastListManagerState extends State<ForcastListManager> {
       queryString = 'lat=' + splitted[0] + '&lon=' + splitted[1];
     }
 
-    // Store search in cache for maximum 12 hours.    
-    saveToSharedPreferences(queryString); 
+    // Store search in cache for maximum 12 hours.
+    saveToSharedPreferences(queryString);
     // Then fetch forcast data to display.
     fetchForcastData(queryString);
   }
@@ -95,6 +101,14 @@ class _ForcastListManagerState extends State<ForcastListManager> {
       } else if (searchType == 'coordinates') {
         _inputCoordinatesValues = inputValue;
       }
+    });
+  }
+
+  Future clearCache() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs.clear();
+    setState(() {
+      _cacheIsClear = true;
     });
   }
 
@@ -163,6 +177,18 @@ class _ForcastListManagerState extends State<ForcastListManager> {
     return Container(
       child: Column(
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(35.0, 15, 35.0, 4),
+            child: IgnorePointer(
+              ignoring: _cacheIsClear,
+              child: RaisedButton(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Refresh Cache'),
+                onPressed: () => clearCache()
+    
+            ))
+            
+          ),
           Container(
             margin: EdgeInsets.fromLTRB(35.0, 15, 35.0, 4),
             child: TextFormField(
