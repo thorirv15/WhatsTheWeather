@@ -1,6 +1,7 @@
 // Package imports.
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -22,10 +23,50 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   List _forcastData = [];
   String _inputCityValue = '', _inputCoordinatesValues = '';
   String _todayTitle = '';
+ 
 
   @override
   void initState() {
+    // Check if the latest search is stored in cache
+    // and should be displayed.
+    readFromSharedPreferences();
     super.initState();
+  }
+
+  Future readFromSharedPreferences() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    final timeStampKey = 'timestamp_key';
+    
+    final storedTimeStampStr = sharedPrefs.getString(timeStampKey);
+    
+    DateTime storedTimeStamp = DateTime.parse(storedTimeStampStr);
+    DateTime currentTimeStamp = DateTime.now();
+    
+    // If more than 12 hours from stored timestamp,
+    // cache will be cleared.
+    if(currentTimeStamp.difference(storedTimeStamp).inHours > 12) {
+      sharedPrefs.clear();
+      return;
+    }
+
+    // The most recent weather forcast for the latest 
+    // search input in the application is fetched.
+    final searchKey = 'search_key';
+    final val = sharedPrefs.getString(searchKey);
+    if(val != null) {
+      fetchForcastData(val);
+    }
+  }
+
+  // Save to cache. Latest search input is stored along
+  // with a timestamp of the search.
+  Future saveToSharedPreferences(String inputSearchKey) async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    final searchKey = 'search_key';
+    final timeStampKey = 'timestamp_key';
+
+    await sharedPrefs.setString(timeStampKey, DateTime.now().toString());
+    await sharedPrefs.setString(searchKey, inputSearchKey);
   }
 
   void onPressed(String searchType) {
@@ -39,6 +80,9 @@ class _ForcastListManagerState extends State<ForcastListManager> {
       queryString = 'lat=' + splitted[0] + '&lon=' + splitted[1];
     }
 
+    // Store search in cache for maximum 12 hours.    
+    saveToSharedPreferences(queryString); 
+    // Then fetch forcast data to display.
     fetchForcastData(queryString);
   }
 
@@ -151,7 +195,7 @@ class _ForcastListManagerState extends State<ForcastListManager> {
           ),
           Container(
               margin: EdgeInsets.fromLTRB(35.0, 20, 35.0, 4),
-              child: Text(_todayTitle)),
+              child: Text(_todayTitle, style: TextStyle(fontSize: 20.0))),
           Forcasts(_forcastData)
         ],
       ),
