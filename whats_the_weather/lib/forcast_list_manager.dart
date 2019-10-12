@@ -21,7 +21,7 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   final String _baseAPIurl =
       'https://community-open-weather-map.p.rapidapi.com/';
   List _forcastData = [];
-  String _inputCityValue = '', _inputCoordinatesValues = '', _todayTitle = '';
+  String _inputCityValue = '', _inputCoordinatesValues = '';
   bool _cacheIsClear = true;
 
   @override
@@ -123,7 +123,6 @@ class _ForcastListManagerState extends State<ForcastListManager> {
       // to the first object in the list (since that
       // is the current day).
       if(i == 0) {
-        forcastData[i]["todayDataStr"] = _todayTitle;
         forcastData[i]["todayForecast"] = forcastNowData;  
       }
       
@@ -173,13 +172,6 @@ class _ForcastListManagerState extends State<ForcastListManager> {
           var extractData = json.decode(detailedRes.body);
           var detailedForcastData = extractData["list"];
 
-          setState(() {
-            _todayTitle = 'Weather today in ' +
-                extractData["city"]["name"] +
-                ", " +
-                extractData["city"]["country"];
-          });
-
           constructFinalList(detailedForcastData, forcast5dayData, forcastNowData);
         }
       }
@@ -190,7 +182,6 @@ class _ForcastListManagerState extends State<ForcastListManager> {
     if(!fetchedAllData) {
       setState(() {
         _forcastData = [];
-        _todayTitle = "";
       });
     }
   }
