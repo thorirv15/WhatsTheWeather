@@ -19,9 +19,9 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   final String _weatherAPIKey =
       '936547b0cfmsh007bf695be676f6p118acejsn7e2010b5d570';
   final String _baseAPIurl =
-      'https://community-open-weather-map.p.rapidapi.com/forecast';
+      'https://community-open-weather-map.p.rapidapi.com/';
   List _forcastData = [];
-  String _inputCityValue = '', _inputCoordinatesValues = '', _todayTitle = '';
+  String _inputCityValue = '', _inputCoordinatesValues = '';
   bool _cacheIsClear = true;
 
   @override
@@ -113,12 +113,19 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   }
 
   // Construct final list to display.
-  void constructFinalList(List detailedForcastData, List forcastData) {
+  void constructFinalList(List detailedForcastData, List forcastData, dynamic forcastNowData) {
     for (int i = 0; i < forcastData.length; i++) {
       DateTime date =
           DateTime.fromMillisecondsSinceEpoch(forcastData[i]["dt"] * 1000);
       forcastData[i]["detail"] = [];
-
+      
+      // Add the today title (city name and country)
+      // to the first object in the list (since that
+      // is the current day).
+      if(i == 0) {
+        forcastData[i]["todayForecast"] = forcastNowData;  
+      }
+      
       for (int j = 0; j < detailedForcastData.length; j++) {
         DateTime detailDate = DateTime.fromMillisecondsSinceEpoch(
             detailedForcastData[j]["dt"] * 1000);
@@ -133,41 +140,48 @@ class _ForcastListManagerState extends State<ForcastListManager> {
   }
 
   Future fetchForcastData(String queryParams) async {
-    String url = _baseAPIurl + '/daily?' + queryParams + '&cnt=5';
-
-    // Fetch forcast for the five days.
-    var res = await http
+    bool fetchedAllData = false;
+    String url = _baseAPIurl + 'weather?' + queryParams;
+    
+    // Fetch the forcast at this moment.
+    var forcastNowRes = await http
         .get(Uri.encodeFull(url), headers: {"X-RapidAPI-Key": _weatherAPIKey});
 
-    if (res.statusCode == 200) {
-      var extractData = json.decode(res.body);
-      var forcastData = extractData["list"];
+    if(forcastNowRes.statusCode == 200) {
+      var extractData = json.decode(forcastNowRes.body);
+      var forcastNowData = extractData;
 
-      List detailedForcastData = [];
-      url = _baseAPIurl + '?' + queryParams;
+      // Fetch forecast for the next five days.
+      url = _baseAPIurl + 'forecast/daily?' + queryParams + '&cnt=5';
+      
+      var forcast5dayRes = await http
+        .get(Uri.encodeFull(url), headers: {"X-RapidAPI-Key": _weatherAPIKey});
 
-      // If a forcast for the five days was found,
-      // fetch a detailed forcast for each day.
-      var detailedRes = await http.get(Uri.encodeFull(url),
+      if (forcast5dayRes.statusCode == 200) {
+        extractData = json.decode(forcast5dayRes.body);
+        var forcast5dayData = extractData["list"];
+        
+        // fetch a detailed forecast for each day.
+        url = _baseAPIurl + 'forecast?' + queryParams;
+
+        var detailedRes = await http.get(Uri.encodeFull(url),
           headers: {"X-RapidAPI-Key": _weatherAPIKey});
 
-      if (detailedRes.statusCode == 200) {
-        var extractData = json.decode(detailedRes.body);
-        detailedForcastData = extractData["list"];
+        if (detailedRes.statusCode == 200) {
+          fetchedAllData = true;
+          var extractData = json.decode(detailedRes.body);
+          var detailedForcastData = extractData["list"];
 
-        setState(() {
-          _todayTitle = 'Weather today in ' +
-              extractData["city"]["name"] +
-              ", " +
-              extractData["city"]["country"];
-        });
-
-        constructFinalList(detailedForcastData, forcastData);
+          constructFinalList(detailedForcastData, forcast5dayData, forcastNowData);
+        }
       }
-    } else {
+    }
+    
+    // If some data was not fetched. The state will be 
+    // as if nothing was found.
+    if(!fetchedAllData) {
       setState(() {
         _forcastData = [];
-        _todayTitle = "";
       });
     }
   }
@@ -219,9 +233,6 @@ class _ForcastListManagerState extends State<ForcastListManager> {
                   onChanged('coordinates', value);
                 }),
           ),
-          Container(
-              margin: EdgeInsets.fromLTRB(35.0, 20, 35.0, 4),
-              child: Text(_todayTitle, style: TextStyle(fontSize: 20.0))),
           Forcasts(_forcastData)
         ],
       ),
