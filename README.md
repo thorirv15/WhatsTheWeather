@@ -53,7 +53,7 @@ Everytime there is something stored in the cache, the user can click on the "Ref
 ## Development
 ### Tech/framework used
 * __Visual Studio Code__ was the editor used to develop the application. Debug mode was used so the application would reload every time changes were made.
-* The __Android emulator__ (Nexus 5X) was used to display the application in the development process.
+* The __Android emulator__ (Nexus 5X API 29 x86) was used to display the application in the development process.
 * The application was developed in __Windows__. The application should however display the app the same way as the Android emulator.
 * __Flutter__ was used along with __Dart__ to write the code for the app. 
 
@@ -79,9 +79,9 @@ There are two main branches, **_development_** and **_master_**. Guidelines are 
 * **_Development branch_**
   * The development takes place on this branch. Every time a new feature, fix or other is being worked on a branch is created based from the development branch. When development is completed on these branches a pull request is made to the development branch.
 * **_Feat branches_**
-  * When ever working on a new feature a branch should be checked out from the development branch with the name feat/name_of_new_feature. 
+  * When ever working on a new feature a branch should be checked out from the development branch with the name feat/nameOfNewFeature. 
 * **_Fix branches_**
-  * When ever working on a fix a branch should be checked out from the development branch with the name fix/name_of_fixing. 
+  * When ever working on a fix a branch should be checked out from the development branch with the name fix/nameOfFixing. 
 * **_Commits_**
   * Commits should be made when ever a change has been made, it should be as small as possible.
 * **_Commit messages_**
