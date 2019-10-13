@@ -63,11 +63,12 @@ class Forecasts extends StatelessWidget {
                 title: Container(
                   child: Row(
                     children: <Widget>[
-                      tempNowContainer(_forecast[index]['temp']['day'], 17, 0),
-                      weatherDescriptionNowContainer(
+                      tempContainer(_forecast[index]['temp']['day'], 17, 0),
+                      weatherDescriptionContainer(
                           _forecast[index]['weather'][0]['icon'],
                           _forecast[index]['weather'][0]['main'],
-                          40,
+                          30,
+                          0,
                           0)
                     ],
                   ),
@@ -98,22 +99,33 @@ class Forecasts extends StatelessWidget {
 
   Widget infoRow(DateTime currDay, List<String> dateStrings, int index) => Row(
         children: <Widget>[
-          dateContainer(currDay, dateStrings, 10, 17),
-          tempNowContainer(
-              _forecast[index]['todayForecast']['main']['temp'], 40, 15),
-          weatherDescriptionNowContainer(
+          tempContainer(
+              _forecast[index]['todayForecast']['main']['temp'], 60, 3),
+          weatherDescriptionContainer(
               _forecast[index]['todayForecast']['weather'][0]['icon'],
               _forecast[index]['todayForecast']['weather'][0]['main'],
-              50,
-              17),
-          highLowTempContainer(
-              index,
-              _forecast[index]['todayForecast']['main']['temp_max'],
-              _forecast[index]['todayForecast']['main']['temp_min'],
-              40,
-              19)
+              25,
+              10,
+              8),
+          Column(
+            children: <Widget>[
+              displayHumidityContainer(_forecast[index]['todayForecast']['main']['humidity'].toString()),
+              displayWindContainer(_forecast[index]['todayForecast']['wind']['speed'].toString())
+            ],
+          )
+          
         ],
       );
+
+  Widget displayHumidityContainer(String humidity) => Container(
+        margin: EdgeInsets.fromLTRB(60, 0, 0, 0),
+        child: Text('Humidity: ' + humidity + '%'),
+      );
+
+  Widget displayWindContainer(String wind) => Container(
+    margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+    child: Text(wind + ' m/s'),
+  );
 
   Widget dateContainer(DateTime currDay, List<String> dateStrings,
           double marginL, double marginT) =>
@@ -131,16 +143,16 @@ class Forecasts extends StatelessWidget {
             ],
           ));
 
-  Widget tempNowContainer(double tempature, double marginL, double marginT) =>
+  Widget tempContainer(var tempature, double marginL, double marginT) =>
       Container(
           margin: EdgeInsets.fromLTRB(marginL, marginT, 0, 0),
           child: Text(kelvinToCelciusStr(tempature),
               style: TextStyle(fontSize: 20.0)));
 
-  Widget weatherDescriptionNowContainer(
-          String icon, String descr, double marginL, double marginT) =>
+  Widget weatherDescriptionContainer(
+          String icon, String descr, double marginL, double marginT, double marginB) =>
       Container(
-          margin: EdgeInsets.fromLTRB(marginL, marginT, 0, 0),
+          margin: EdgeInsets.fromLTRB(marginL, marginT, 0, marginB),
           child: Row(
             children: <Widget>[
               Image.network(_getIconUrl + icon + '.png'),
