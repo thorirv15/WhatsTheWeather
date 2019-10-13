@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 
 // Internal imports.
 import './forecasts.dart';
@@ -216,7 +215,6 @@ class _ForecastListManagerState extends State<ForecastListManager> {
   }
 
   // Below are the implementations of the widgets.
-  @widget
   Widget refreshCacheButton() => Container(
       margin: EdgeInsets.fromLTRB(35.0, 15, 35.0, 4),
       child: IgnorePointer(
@@ -226,7 +224,6 @@ class _ForecastListManagerState extends State<ForecastListManager> {
               child: Text('Refresh Cache'),
               onPressed: () => clearCache())));
 
-  @widget
   Widget inputCityField() => Container(
         margin: EdgeInsets.fromLTRB(35.0, 15, 35.0, 4),
         child: TextFormField(
@@ -243,7 +240,6 @@ class _ForecastListManagerState extends State<ForecastListManager> {
             }),
       );
 
-  @widget
   Widget inputCoordinatesField() => Container(
         margin: EdgeInsets.fromLTRB(35.0, 4, 35.0, 4),
         child: TextFormField(
