@@ -204,11 +204,11 @@ class _ForecastListManagerState extends State<ForecastListManager> {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        children: <Widget>[
-          refreshCacheButton(),
-          inputCityField(),
-          inputCoordinatesField(),
-          Forecasts(_forecastData)
+        children: <Widget>[ 
+          inputField('Enter city', 'city', 20, 4),
+          inputField('Enter coordinates: Lat, Long', 'coordinates', 3, 20), 
+          Forecasts(_forecastData),
+          refreshCacheButton()
         ],
       ),
     );
@@ -216,7 +216,7 @@ class _ForecastListManagerState extends State<ForecastListManager> {
 
   // Below are the implementations of the widgets.
   Widget refreshCacheButton() => Container(
-      margin: EdgeInsets.fromLTRB(35.0, 15, 35.0, 4),
+      margin: EdgeInsets.fromLTRB(295, 0, 0, 30),
       child: IgnorePointer(
           ignoring: _cacheIsClear,
           child: RaisedButton(
@@ -224,35 +224,21 @@ class _ForecastListManagerState extends State<ForecastListManager> {
               child: Text('Refresh Cache'),
               onPressed: () => clearCache())));
 
-  Widget inputCityField() => Container(
-        margin: EdgeInsets.fromLTRB(35.0, 15, 35.0, 4),
+  Widget inputField(String hintTextStr, String onPressedStr, double marginT, double marginB) => Container(
+        margin: EdgeInsets.fromLTRB(35.0, marginT, 35.0, marginB),
         child: TextFormField(
             decoration: InputDecoration(
-                hintText: 'Enter city',
+                contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                hintText: hintTextStr,
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                     icon: Icon(Icons.check),
                     onPressed: () {
-                      onPressed('city');
+                      onPressed(onPressedStr);
                     })),
             onChanged: (String value) {
-              onChanged('city', value);
+              onChanged(onPressedStr, value);
             }),
       );
 
-  Widget inputCoordinatesField() => Container(
-        margin: EdgeInsets.fromLTRB(35.0, 4, 35.0, 4),
-        child: TextFormField(
-            decoration: InputDecoration(
-                hintText: 'Enter coordinates: Lat, Long',
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: () {
-                      onPressed('coordinates');
-                    })),
-            onChanged: (String value) {
-              onChanged('coordinates', value);
-            }),
-      );
 }
