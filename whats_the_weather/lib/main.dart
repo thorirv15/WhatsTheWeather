@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Internal imports.
-import './forcast_list_manager.dart';
+import './forecast_list_manager.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,11 +12,10 @@ class MyApp extends StatelessWidget {
     // Core root widget.
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Whats The Weather!'),
-        ),
-        body: ForcastListManager()
-      ),
+          appBar: AppBar(title: Center(child: Text('Whats The Weather'))),
+          // ForecastListManager displays and manages the
+          // weather forecast.
+          body: ForecastListManager()),
     );
   }
 }
