@@ -34,7 +34,7 @@ class Forecasts extends StatelessWidget {
   // expansion tiles which can be clicked to see details for that day.
   @override
   Widget build(BuildContext context) {
-    if (forecast == null) {
+    if (forecast == []) {
       return Container();
     }
     return Expanded(

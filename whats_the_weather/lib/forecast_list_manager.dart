@@ -86,7 +86,7 @@ class _ForecastListManagerState extends State<ForecastListManager> {
     String queryString = '';
     if (searchType == 'city') {
       queryString = 'q=' + _inputCityValue;
-    } else if (searchType == 'coordinates') {
+    } else if (searchType == 'coordinates' && _inputCoordinatesValues.contains(',')) {
       var splitted = _inputCoordinatesValues.split(',');
       queryString = 'lat=' + splitted[0] + '&lon=' + splitted[1];
     }
