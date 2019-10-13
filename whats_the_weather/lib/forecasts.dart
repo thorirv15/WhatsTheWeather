@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import './forecast_details.dart';
 
 class Forecasts extends StatelessWidget {
-  final List forecast;
+  final String _getIconUrl = 'http://openweathermap.org/img/w/';
+  final List _forecast;
   final List _weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   final List _months = [
     'Jan',
@@ -20,7 +21,7 @@ class Forecasts extends StatelessWidget {
     'Nov',
     'Dec'
   ];
-  Forecasts(this.forecast);
+  Forecasts(this._forecast);
 
   String kelvinToCelciusStr(var tempInKelvin) =>
       ((tempInKelvin - 272.15).round()).toString() + '°C';
@@ -32,15 +33,15 @@ class Forecasts extends StatelessWidget {
   // expansion tiles which can be clicked to see details for that day.
   @override
   Widget build(BuildContext context) {
-    if (forecast == []) {
+    if (_forecast == []) {
       return Container();
     }
     return Expanded(
         child: ListView.builder(
-      itemCount: forecast.length,
+      itemCount: _forecast.length,
       itemBuilder: (BuildContext context, int index) {
         DateTime currDay =
-            DateTime.fromMillisecondsSinceEpoch(forecast[index]['dt'] * 1000);
+            DateTime.fromMillisecondsSinceEpoch(_forecast[index]['dt'] * 1000);
         List<String> dateStrings = currDay.toString().split(' ')[0].split('-');
 
         // If item is the current day.
@@ -51,7 +52,7 @@ class Forecasts extends StatelessWidget {
               children: <Widget>[
                 currentLocationTitle(index),
                 infoRow(currDay, dateStrings, index),
-                ForecastDetails(forecast[index]['detail'])
+                ForecastDetails(_forecast[index]['detail'])
               ],
             ),
           );
@@ -59,13 +60,25 @@ class Forecasts extends StatelessWidget {
           return Card(
             child: ExpansionTile(
                 leading: dateContainer(currDay, dateStrings, 0, 8),
-                title: tempExpansionTileContainer(index),
-                children: <Widget>[ForecastDetails(forecast[index]['detail'])],
+                title: Container(
+                  child: Row(
+                    children: <Widget>[
+                      tempNowContainer(_forecast[index]['temp']['day'], 17, 0),
+                      weatherDescriptionNowContainer(
+                          _forecast[index]['weather'][0]['icon'],
+                          _forecast[index]['weather'][0]['main'],
+                          40,
+                          0)
+                    ],
+                  ),
+                ),
+                children: <Widget>[ForecastDetails(_forecast[index]['detail'])],
                 trailing: highLowTempContainer(
                     index,
-                    forecast[index]['temp']['max'],
-                    forecast[index]['temp']['min'],
-                    0)),
+                    _forecast[index]['temp']['max'],
+                    _forecast[index]['temp']['min'],
+                    0,
+                    13)),
           );
         }
       },
@@ -74,25 +87,31 @@ class Forecasts extends StatelessWidget {
 
   // Below are the implementations of the widgets.
   Widget currentLocationTitle(int index) => Container(
-        margin: EdgeInsets.fromLTRB(0, 7, 0, 0),
+        margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
         child: Text(
-            'Weather now in ' +
-                forecast[index]['todayForecast']['name'] +
-                ', ' +
-                forecast[index]['todayForecast']['sys']['country'],
-            style: TextStyle(fontSize: 20.0)),
+          _forecast[index]['todayForecast']['name'] +
+              ', ' +
+              _forecast[index]['todayForecast']['sys']['country'],
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        ),
       );
 
   Widget infoRow(DateTime currDay, List<String> dateStrings, int index) => Row(
         children: <Widget>[
           dateContainer(currDay, dateStrings, 10, 17),
-          tempNowContainer(index),
-          weatherDescriptionNowContainer(index),
+          tempNowContainer(
+              _forecast[index]['todayForecast']['main']['temp'], 40, 15),
+          weatherDescriptionNowContainer(
+              _forecast[index]['todayForecast']['weather'][0]['icon'],
+              _forecast[index]['todayForecast']['weather'][0]['main'],
+              50,
+              17),
           highLowTempContainer(
               index,
-              forecast[index]['todayForecast']['main']['temp_max'],
-              forecast[index]['todayForecast']['main']['temp_min'],
-              45)
+              _forecast[index]['todayForecast']['main']['temp_max'],
+              _forecast[index]['todayForecast']['main']['temp_min'],
+              40,
+              19)
         ],
       );
 
@@ -112,27 +131,27 @@ class Forecasts extends StatelessWidget {
             ],
           ));
 
-  Widget tempNowContainer(int index) => Container(
-      margin: EdgeInsets.fromLTRB(40, 5, 0, 0),
-      child: Text(
-          kelvinToCelciusStr(forecast[index]['todayForecast']['main']['temp']),
-          style: TextStyle(fontSize: 20.0)));
-
-  Widget weatherDescriptionNowContainer(int index) => Container(
-      margin: EdgeInsets.fromLTRB(35, 17, 0, 0),
-      child: Column(
-        children: <Widget>[
-          Text(forecast[index]['todayForecast']['weather'][0]['main'],
-              style: TextStyle(fontSize: 20.0)),
-          Text(
-              'Humidity: ' + forecast[index]['todayForecast']['main']['humidity'].toString() + '%',
-              style: TextStyle(fontSize: 12.0))
-        ],
-      ));
-
-  Widget highLowTempContainer(int index, var max, var min, double marginL) =>
+  Widget tempNowContainer(double tempature, double marginL, double marginT) =>
       Container(
-          margin: EdgeInsets.fromLTRB(marginL, 13, 0, 0),
+          margin: EdgeInsets.fromLTRB(marginL, marginT, 0, 0),
+          child: Text(kelvinToCelciusStr(tempature),
+              style: TextStyle(fontSize: 20.0)));
+
+  Widget weatherDescriptionNowContainer(
+          String icon, String descr, double marginL, double marginT) =>
+      Container(
+          margin: EdgeInsets.fromLTRB(marginL, marginT, 0, 0),
+          child: Row(
+            children: <Widget>[
+              Image.network(_getIconUrl + icon + '.png'),
+              Text(descr, style: TextStyle(fontSize: 20.0))
+            ],
+          ));
+
+  Widget highLowTempContainer(
+          int index, var max, var min, double marginL, double marginT) =>
+      Container(
+          margin: EdgeInsets.fromLTRB(marginL, marginT, 0, 0),
           child: Column(
             children: <Widget>[
               Text('High: ' + kelvinToCelciusStr(max),
@@ -143,16 +162,4 @@ class Forecasts extends StatelessWidget {
                   )),
             ],
           ));
-
-  Widget tempExpansionTileContainer(int index) => Container(
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Text('Average: ' +
-                    kelvinToCelciusStr(forecast[index]['temp']['day']))),
-            Expanded(child: Text(forecast[index]['weather'][0]['main'])),
-          ],
-        ),
-      );
 }
