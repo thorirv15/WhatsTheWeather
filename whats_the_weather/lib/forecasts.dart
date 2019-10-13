@@ -1,7 +1,5 @@
 // Package imports.
 import 'package:flutter/material.dart';
-import 'package:functional_widget_annotation/functional_widget_annotation.dart';
-
 // Internal imports.
 import './forecast_details.dart';
 
@@ -34,7 +32,7 @@ class Forecasts extends StatelessWidget {
   // expansion tiles which can be clicked to see details for that day.
   @override
   Widget build(BuildContext context) {
-    if (forecast == null) {
+    if (forecast == []) {
       return Container();
     }
     return Expanded(
@@ -75,7 +73,6 @@ class Forecasts extends StatelessWidget {
   }
 
   // Below are the implementations of the widgets.
-  @widget
   Widget currentLocationTitle(int index) => Container(
         margin: EdgeInsets.fromLTRB(0, 7, 0, 0),
         child: Text(
@@ -86,7 +83,6 @@ class Forecasts extends StatelessWidget {
             style: TextStyle(fontSize: 20.0)),
       );
 
-  @widget
   Widget infoRow(DateTime currDay, List<String> dateStrings, int index) => Row(
         children: <Widget>[
           dateContainer(currDay, dateStrings, 10, 17),
@@ -100,7 +96,6 @@ class Forecasts extends StatelessWidget {
         ],
       );
 
-  @widget
   Widget dateContainer(DateTime currDay, List<String> dateStrings,
           double marginL, double marginT) =>
       Container(
@@ -117,14 +112,12 @@ class Forecasts extends StatelessWidget {
             ],
           ));
 
-  @widget
   Widget tempNowContainer(int index) => Container(
       margin: EdgeInsets.fromLTRB(40, 5, 0, 0),
       child: Text(
           kelvinToCelciusStr(forecast[index]['todayForecast']['main']['temp']),
           style: TextStyle(fontSize: 20.0)));
 
-  @widget
   Widget weatherDescriptionNowContainer(int index) => Container(
       margin: EdgeInsets.fromLTRB(35, 17, 0, 0),
       child: Column(
@@ -137,7 +130,6 @@ class Forecasts extends StatelessWidget {
         ],
       ));
 
-  @widget
   Widget highLowTempContainer(int index, var max, var min, double marginL) =>
       Container(
           margin: EdgeInsets.fromLTRB(marginL, 13, 0, 0),
@@ -152,7 +144,6 @@ class Forecasts extends StatelessWidget {
             ],
           ));
 
-  @widget
   Widget tempExpansionTileContainer(int index) => Container(
         child: Row(
           children: <Widget>[
