@@ -79,56 +79,12 @@ Additional packages used in the development will be listed below with arguments 
 * __shared_preferences__
   * Provides a persistent storage of simple data to disk asynchronously. Since the data to store is simple, this package provides a simple and an efficient way to read and write the data. 
 
-### Code guidelines
-* __Consistency__ - Coding style should be consistent in the implementation.
-  * *Strings* should be concatenated in the same way, using the + operator. They should always be in single quotes.
-  * *Functions* should be declared and set up the same way. One line functions are allowed when code is only one line.
-  * *If statements* can be in a single line if there is only one line. There should always be an else statement that follows an if statement.
-  * *Comments* should be made if something is unclear or could possibly be unclear. 
-
-### Git rules
-There are two main branches, **_development_** and **_master_**. Guidelines are described below to specify each part in more details.
-* **_Master branch_**
-  * Only fully functional versions should be on the master branch. A pull request is made to the master branch from the development branch. 
-* **_Development branch_**
-  * The development takes place on this branch. Every time a new feature, fix or other is being worked on a branch is created based from the development branch. When development is completed on these branches a pull request is made to the development branch.
-* **_Feat branches_**
-  * When ever working on a new feature a branch should be checked out from the development branch with the name feat/nameOfNewFeature. 
-* **_Fix branches_**
-  * When ever working on a fix a branch should be checked out from the development branch with the name fix/nameOfFixing. 
-* **_Commits_**
-  * Commits should be made when ever a change has been made, it should be as small as possible.
-* **_Commit messages_**
-  * Commit messages are important. And all commit messages have to describe every thing that was changed. They should have a descriptive title and a text describing what was changed.
-* **_Pull requests_**
-  * Pull requests should be reviewed by another developer before merging the branch. 
-
-### Process
-These three stages were used to keep track of the development process where each task was written on a note and moved between stages until all notes eneded up in the "Done" stage.
-
-![](https://github.com/thorirv15/WhatsTheWeather/blob/master/dev_process/1.jpg)
-![](https://github.com/thorirv15/WhatsTheWeather/blob/master/dev_process/2.jpg)
-![](https://github.com/thorirv15/WhatsTheWeather/blob/master/dev_process/3.jpg)
-
-### Comments on future development
-1. **Tests** should be added to the code base. Starting with unit tests, then integration tests and finally end to end tests. 
-
-2. **Continuous Integration** should be used when the tests have been properly built. A solid pipeline should be constructed that runs the tests and possibly deploys the application.
-
-3. **Bug fixes** Bugs need to be found and fixed.
-
-4. **UI update** Styling of UI has to be developed further.
-
-5. **More features** There are many possibilities of more features that can be added to the application. To name a few that would be good to have in the app:
-   * Customized view.
-     * Where user can control what details to see when looking at the forecast, since there are many things that can be displayed.
-   * Units settings.
-     * User should be able to set the units that are used when displaying the data (Fahrenheit, Kelvin or Celsius for example).
-   * See forecast for more than one location at a time.
-   * See forecast based on the location of the phone.
-   * Receive notifications when there are alerting weather forecasts. 
-   * Hear the weather forecast at set times.
-
+### Wiki
+More detailed documentation can be seen in the wiki part of the project where documents listed below can be found.
+* Coding guidelines
+* Git rules
+* Development Process
+* Comments on future development
 
 
 ## License
