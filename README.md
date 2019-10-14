@@ -10,9 +10,9 @@ Flutter needs to be set up on the device. Below are installation guides for diff
 * [Install flutter on Windows.](https://flutter.dev/docs/get-started/install/windows)
 * [Install flutter on Mac.](https://flutter.dev/docs/get-started/install/macos)
 * [Install flutter on Linux.](https://flutter.dev/docs/get-started/install/linux)
-### VScode (optional)
-Visual Studio code was used to develop the application. It provides a good platform to develop a flutter application with many useful extensions. It is an alternative to using Android studio (or X Code).
-* [Install Vs Code for windows](https://code.visualstudio.com/download)
+### VSCode (optional)
+Visual Studio Code was used to develop the application. It provides a good platform to develop a flutter application with many useful extensions. It is an alternative to using Android studio (or XCode).
+* [Install VSCode for windows](https://code.visualstudio.com/download)
 
 Useful extensions used were:
 * Dart
@@ -20,6 +20,16 @@ Useful extensions used were:
 * Flutter
 
 Extensions can be added by pressing (Ctrl + Shift + X), while in the editor.
+
+## Running the application
+The application was developed using __Windows__ in the __VSCode__ editor using the __Android emulator__ (Nexus 5X API 29 x86). The steps are according to that set up. The process should be simular using VSCode in Linux or Mac.
+1. Start the emulator.
+   1. Start Android Studio
+   2. Go to Tools > AVD manager
+   3. Press play to start up the emulator.
+2. Open the project in VSCode.
+   1. Go to Debug
+   2. Press Start Debugging/use shortcut(F5)
 
 ## Usage
 ### Snapshots
@@ -60,6 +70,7 @@ Everytime there is something stored in the cache, the user can click on the "Ref
 ### API used
 RapidApi was used to fetch the weather data (the current weather, weather for the next 5 days and further details for those 5 days).
 * [Link to RapidAPI](https://rapidapi.com/community/api/open-weather-map/endpoints)
+
 OpenWeather was used to fetch weather icon images to display in the forecast.
 * [Link to OpenWeatherAPI](https://openweathermap.org/api)
  
