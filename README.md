@@ -45,9 +45,9 @@ When the forecast is displayed on the screen the forecast for the current moment
 #### Forecast details
 It is possible to click on each of the four next days displayed to see a detailed forcast for that day. Details for the current day will always be displayed.
 #### Caching functionality
-Every time a new forecast is fetched the city or coordinates are cached. This is done so that the user will always see the newest forecast based on the last input after restarting the application. If the data has been stored for more than 12 hours the data will be deleted.
+Every time a new forecast is fetched the city or coordinates are cached. When the user restarts the application he will always see the newest forecast based on the latest search input. If the data has been stored for more than 12 hours the data will be deleted from the storage.
 #### Refresh cache
-Everytime there is something stored in the cache, the user can click on the "Refresh Cache" button on top of the screen to empty the cache. If there is nothing in the cache, the button will be unclickable.
+Everytime there is something stored in the cache, the user can click on the "Refresh Cache" button on the buttom of the screen to empty the cache. If there is nothing in the cache, the button will be unclickable.
 
 
 ## Development
@@ -58,8 +58,11 @@ Everytime there is something stored in the cache, the user can click on the "Ref
 * __Flutter__ was used along with __Dart__ to write the code for the app. 
 
 ### API used
-RadidApi was used to fetch the weather data (the current weather, weather for the next 5 days and further details for those 5 days).
-* [Link to API](https://rapidapi.com/community/api/open-weather-map/endpoints)
+RapidApi was used to fetch the weather data (the current weather, weather for the next 5 days and further details for those 5 days).
+* [Link to RapidAPI](https://rapidapi.com/community/api/open-weather-map/endpoints)
+OpenWeather was used to fetch weather icon images to display in the forecast.
+* [Link to OpenWeatherAPI](https://openweathermap.org/api)
+ 
 ### Additional packages used
 Additional packages used in the development will be listed below with arguments why they were chosen to be used.
 * __shared_preferences__
@@ -89,6 +92,12 @@ There are two main branches, **_development_** and **_master_**. Guidelines are 
 * **_Pull requests_**
   * Pull requests should be reviewed by another developer before merging the branch. 
 
+### Process
+These three stages were used to keep track of the development process where each task was written on a note and moved between stages until all notes eneded up in the "Done" stage.
+
+![](https://github.com/thorirv15/WhatsTheWeather/blob/master/dev_process/1.jpg)
+![](https://github.com/thorirv15/WhatsTheWeather/blob/master/dev_process/2.jpg)
+![](https://github.com/thorirv15/WhatsTheWeather/blob/master/dev_process/3.jpg)
 
 ### Comments on future development
 1. **Tests** should be added to the code base. Starting with unit tests, then integration tests and finally end to end tests. 
