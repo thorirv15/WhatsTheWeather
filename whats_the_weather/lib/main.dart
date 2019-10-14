@@ -12,18 +12,18 @@ class MyApp extends StatelessWidget {
     // Core root widget.
     return MaterialApp(
       theme: ThemeData(
-      // Set default brightness and colors and fontfamily.
-      brightness: Brightness.dark,
-      primaryColor: Colors.lightBlue[600],
-      accentColor: Colors.cyan[600],
-      fontFamily: 'Montserrat',
-
+        // Set default brightness and colors and fontfamily.
+        brightness: Brightness.dark,
+        primaryColor: Colors.lightBlue[600],
+        accentColor: Colors.cyan[600],
+        fontFamily: 'Montserrat'
       ),
       home: Scaffold(
-          appBar: AppBar(title: Center(child: Text('Whats The Weather'))),
-          // ForecastListManager displays and manages the
-          // weather forecast.
-          body: ForecastListManager()),
+        appBar: AppBar(title: Center(child: Text('Whats The Weather'))),
+        // ForecastListManager displays and manages the
+        // weather forecast.
+        body: ForecastListManager()
+      )
     );
   }
 }

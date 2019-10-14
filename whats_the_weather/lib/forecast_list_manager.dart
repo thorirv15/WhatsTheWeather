@@ -82,8 +82,7 @@ class _ForecastListManagerState extends State<ForecastListManager> {
     // the API should be called to fetch data.
     String queryString = '';
     if (searchType == 'city') { queryString = 'q=' + _inputCityValue; } 
-    else if (searchType == 'coordinates' &&
-        _inputCoordinatesValues.contains(',')) {
+    else if (searchType == 'coordinates' && _inputCoordinatesValues.contains(',')) {
       var splitted = _inputCoordinatesValues.split(',');
       queryString = 'lat=' + splitted[0] + '&lon=' + splitted[1];
     }
@@ -115,8 +114,7 @@ class _ForecastListManagerState extends State<ForecastListManager> {
     // Iterate through the 5 day forecast and for each day,
     // add a detailed forecast for that day.
     for (int i = 0; i < forecastData.length; i++) {
-      DateTime date =
-          DateTime.fromMillisecondsSinceEpoch(forecastData[i]['dt'] * 1000);
+      DateTime date = DateTime.fromMillisecondsSinceEpoch(forecastData[i]['dt'] * 1000);
 
       // Create a new key for the detail part of the data.
       // A list of the 5 days in more detail.
@@ -197,39 +195,40 @@ class _ForecastListManagerState extends State<ForecastListManager> {
         children: <Widget>[
           inputField('Enter city', 'city', 20, 4),
           inputField('Enter coordinates: Lat, Long', 'coordinates', 3, 20),
+          // The list is displayed in the Forecasts widget.
           Forecasts(_forecastData),
           refreshCacheButton()
-        ],
-      ),
+        ]
+      )
     );
   }
 
   // Below are the implementations of the widgets.
   Widget refreshCacheButton() => Container(
-      margin: EdgeInsets.fromLTRB(295, 0, 0, 30),
-      child: IgnorePointer(
-          ignoring: _cacheIsClear,
-          child: RaisedButton(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Refresh Cache'),
-              onPressed: () => clearCache())));
+    margin: EdgeInsets.fromLTRB(295, 0, 0, 30),
+    child: IgnorePointer(
+      ignoring: _cacheIsClear,
+      child: RaisedButton(
+        padding: EdgeInsets.all(8.0),
+        child: Text('Refresh Cache'),
+        onPressed: () => clearCache())
+    )
+  );
 
   Widget inputField(String hintTextStr, String onPressedStr, double marginT,
-          double marginB) =>
-      Container(
-        margin: EdgeInsets.fromLTRB(35.0, marginT, 35.0, marginB),
-        child: TextFormField(
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                hintText: hintTextStr,
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: () {
-                      onPressed(onPressedStr);
-                    })),
-            onChanged: (String value) {
-              onChanged(onPressedStr, value);
-            }),
-      );
+          double marginB) => Container(
+    margin: EdgeInsets.fromLTRB(35.0, marginT, 35.0, marginB),
+    child: TextFormField(
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+        hintText: hintTextStr,
+        border: OutlineInputBorder(),
+        suffixIcon: IconButton(
+          icon: Icon(Icons.check),
+          onPressed: () => onPressed(onPressedStr)
+        )
+      ),
+      onChanged: (String value) => onChanged(onPressedStr, value) 
+    )
+  );
 }
