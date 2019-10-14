@@ -1,5 +1,5 @@
 # Whats The Weather
-An app that displays the weather forcast in detail for the next 5 days. Forcasts can be searched by city name or coordinates(lat and long).
+An app that displays the weather forcast in detail for the next 5 days. Forcasts can be searched by city name or coordinates (lat,long).
 
 # Version
 1.0.0
