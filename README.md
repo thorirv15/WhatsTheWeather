@@ -80,7 +80,7 @@ Additional packages used in the development will be listed below with arguments 
   * Provides a persistent storage of simple data to disk asynchronously. Since the data to store is simple, this package provides a simple and an efficient way to read and write the data. 
 
 ### Wiki
-More detailed documentation can be seen in the wiki part of the project where documents listed below can be found.
+More detailed documentation can be seen in the [wiki](https://github.com/thorirv15/WhatsTheWeather/wiki) of the project where documents listed below can be found.
 * Coding guidelines
 * Git rules
 * Development Process
