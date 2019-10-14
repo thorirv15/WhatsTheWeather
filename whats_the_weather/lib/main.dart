@@ -12,12 +12,10 @@ class MyApp extends StatelessWidget {
     // Core root widget.
     return MaterialApp(
       theme: ThemeData(
-      // Define the default brightness and colors.
+      // Set default brightness and colors and fontfamily.
       brightness: Brightness.dark,
       primaryColor: Colors.lightBlue[600],
       accentColor: Colors.cyan[600],
-    
-      // Define the default font family.
       fontFamily: 'Montserrat',
 
       ),

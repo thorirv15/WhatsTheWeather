@@ -41,9 +41,7 @@ class _ForecastListManagerState extends State<ForecastListManager> {
 
     // Start by fetching the timestamp.
     final storedTimeStampStr = sharedPrefs.getString(timeStampKey);
-    if (storedTimeStampStr == null) {
-      return;
-    }
+    if (storedTimeStampStr == null) { return; }
     DateTime storedTimeStamp = DateTime.parse(storedTimeStampStr);
     DateTime currentTimeStamp = DateTime.now();
 
@@ -83,9 +81,9 @@ class _ForecastListManagerState extends State<ForecastListManager> {
     // When the button is pressed,
     // the API should be called to fetch data.
     String queryString = '';
-    if (searchType == 'city') {
-      queryString = 'q=' + _inputCityValue;
-    } else if (searchType == 'coordinates' && _inputCoordinatesValues.contains(',')) {
+    if (searchType == 'city') { queryString = 'q=' + _inputCityValue; } 
+    else if (searchType == 'coordinates' &&
+        _inputCoordinatesValues.contains(',')) {
       var splitted = _inputCoordinatesValues.split(',');
       queryString = 'lat=' + splitted[0] + '&lon=' + splitted[1];
     }
@@ -100,11 +98,8 @@ class _ForecastListManagerState extends State<ForecastListManager> {
   // is changed in either textfield.
   void onChanged(String searchType, String inputValue) {
     setState(() {
-      if (searchType == 'city') {
-        _inputCityValue = inputValue;
-      } else if (searchType == 'coordinates') {
-        _inputCoordinatesValues = inputValue;
-      }
+      if (searchType == 'city') { _inputCityValue = inputValue;} 
+      else if (searchType == 'coordinates') { _inputCoordinatesValues = inputValue; }
     });
   }
 
@@ -129,9 +124,7 @@ class _ForecastListManagerState extends State<ForecastListManager> {
 
       // If it is the first day, add a key for the
       // present weather data.
-      if (i == 0) {
-        forecastData[i]['todayForecast'] = forecastNowData;
-      }
+      if (i == 0) { forecastData[i]['todayForecast'] = forecastNowData; }
 
       for (int j = 0; j < detailedforecastData.length; j++) {
         DateTime detailDate = DateTime.fromMillisecondsSinceEpoch(
@@ -184,17 +177,14 @@ class _ForecastListManagerState extends State<ForecastListManager> {
 
           // When all data needed has been fetched, the final list
           // will be constructed and state will be set with that list.
-          constructFinalList(
-              detailedforecastData, forecast5dayData, forecastNowData);
+          constructFinalList(detailedforecastData, forecast5dayData, forecastNowData);
         }
       }
     }
 
     // If some data was not fetched. The state will be
     // set as if nothing was found.
-    if (!fetchedAllData) {
-      setState(() => _forecastData = []);
-    }
+    if (!fetchedAllData) { setState(() => _forecastData = []); }
   }
 
   // The body part of the application is wrapped in a container
@@ -204,9 +194,9 @@ class _ForecastListManagerState extends State<ForecastListManager> {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        children: <Widget>[ 
+        children: <Widget>[
           inputField('Enter city', 'city', 20, 4),
-          inputField('Enter coordinates: Lat, Long', 'coordinates', 3, 20), 
+          inputField('Enter coordinates: Lat, Long', 'coordinates', 3, 20),
           Forecasts(_forecastData),
           refreshCacheButton()
         ],
@@ -224,7 +214,9 @@ class _ForecastListManagerState extends State<ForecastListManager> {
               child: Text('Refresh Cache'),
               onPressed: () => clearCache())));
 
-  Widget inputField(String hintTextStr, String onPressedStr, double marginT, double marginB) => Container(
+  Widget inputField(String hintTextStr, String onPressedStr, double marginT,
+          double marginB) =>
+      Container(
         margin: EdgeInsets.fromLTRB(35.0, marginT, 35.0, marginB),
         child: TextFormField(
             decoration: InputDecoration(
@@ -240,5 +232,4 @@ class _ForecastListManagerState extends State<ForecastListManager> {
               onChanged(onPressedStr, value);
             }),
       );
-
 }
